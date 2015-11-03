@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import util.Util;
 
@@ -28,18 +29,29 @@ public class ID_topic_Matrix_Builder {
 //		PrintStream newOut = new PrintStream(outputFile);
 //		System.setOut(newOut);
 		
+		//produce hashmaps
+		HashMap<String, Integer>ID_index_Map = new HashMap<String, Integer>();
+		for(int index=0; index<ID_Vector.length; index++){
+			ID_index_Map.put(ID_Vector[index], index);
+		}
+		HashMap<String, Integer>topic_index_Map = new HashMap<String, Integer>();
+		for(int index=0; index<topic_Vector.length; index++){
+			topic_index_Map.put(topic_Vector[index], index);
+		}
+		
 		
 		//Matrix füllen.
 		for (String line: IDs_per_Topic){
 			String[] parts = line.split(" ");
 			String topic = parts[0];
 			String ID = parts[1];
-			int IDindex = Arrays.binarySearch(ID_Vector, ID, null); //die binäre Suche in diesem riesigen Array dauert vll zu lange...
-			int topicIndex = Arrays.binarySearch(topic_Vector, topic, null);
+			//Indezes von ID und topic über hashmaps
+			int IDindex = ID_index_Map.get(ID); 
+			int topicIndex = topic_index_Map.get(topic);
 			try {
 				ID_Topic_Matrix[IDindex][topicIndex]=true;
 			} catch (Exception e) {
-				System.err.println("ID or topic not found!\n\tID:\t\t"+ID+"\n\ttopic\t\t"+topic);
+				System.err.println("ID or topic not found!\n\tID:\t\t"+ID+"\tIndex:"+IDindex+"\n\ttopic\t\t"+topic+"\tIndex:"+topicIndex);
 			}
 		}
 		
