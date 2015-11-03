@@ -1,6 +1,7 @@
 package util;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -33,6 +34,19 @@ public class Util {
 		List<String> lines = new ArrayList<String>();
 		lines = Files.readAllLines(Paths.get(path), encoding);
 		return lines;
+	}
+	
+	public static String[] readFile2Array(String path, Charset encoding) throws IOException{
+		List<String> lineList = readFile2List(path, encoding);
+		return lineList.toArray(new String[lineList.size()]);
+	}
+	
+	public static void writeList2File(List<String> list, String path) throws IOException{
+		FileWriter writer = new FileWriter(path); 
+		for (String line : list){
+			writer.write(line+'\n');
+		}
+		writer.close();
 	}
 
 }
